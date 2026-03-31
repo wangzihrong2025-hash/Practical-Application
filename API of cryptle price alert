@@ -1,0 +1,28 @@
+#APIofCryptleAler
+
+import requests  # 用來向 API 發送請求
+import time      # 用來控制每次查價的間隔時間
+
+coin = input("請輸入幣種（例如 bitcoin）：").strip().lower()
+target = float(input("請輸入提醒價格（美元）："))
+
+while True:  # 無限迴圈，重複查價直到達標
+    url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
+    response = requests.get(url)   # 向 CoinGecko API 取資料
+    data = response.json()         # 把回傳資料轉成 Python dict
+
+    try:
+        price = data[coin]["usd"]  # 從 dict 中取出美元價格
+        print(f"{coin} 現價: ${price}")
+
+        if price >= target:        # 如果達到或超過目標價
+            print("已達到或超過目標價格！")
+            break                  # 結束程式
+        else:
+            print("還沒到目標價，5 秒後再查一次...")
+
+    except:
+        print("幣種錯誤，請確認輸入是否正確")
+        break
+
+    time.sleep(5)  # 暫停 5 秒，避免頻繁呼叫 API
