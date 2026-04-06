@@ -26,3 +26,4 @@ while True:  # 無限迴圈，重複查價直到達標
         break
 
     time.sleep(5)  # 暫停 5 秒，避免頻繁呼叫 API
+
